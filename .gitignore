@@ -1,0 +1,26 @@
+# Keep local automation/private workflows untracked
+.github
+
+# IDE/editor
+.idea/
+.vscode/
+*.iml
+
+# OS files
+.DS_Store
+
+# Maven/Java build output
+target/
+**/target/
+*.class
+
+# Logs
+logs/
+*.log
+
+# Local env/secrets overrides
+.env
+.env.*
+*.local
+application-local.yml
+application-local.yaml

@@ -1,0 +1,989 @@
+{
+  "info": {
+    "_postman_id": "7994e042-76b2-4e62-a367-ea1af9a73b6f",
+    "name": "Card Application API",
+    "description": "Create, update, retrieve, paginate, and obtain a third-party exchange rate for card payment transactions.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "8430429"
+  },
+  "item": [
+    {
+      "name": "Create payment",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();",
+              "pm.collectionVariables.set('paymentId', response.id);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"merchantReference\": \"ORDER-10001\",\n  \"amount\": 125.50,\n  \"currency\": \"USD\",\n  \"cardToken\": \"1234 1234 1234 4242\",\n  \"lastFour\": \"4242\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/card-payment/create",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "card-payment",
+            "create"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Create payment - success",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"merchantReference\": \"ORDER-10001\",\n  \"amount\": 125.50,\n  \"currency\": \"USD\",\n  \"cardToken\": \"1234 1234 1234 4242\",\n  \"lastFour\": \"4242\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/card-payment/create",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "card-payment",
+                "create"
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "219"
+            },
+            {
+              "key": "Date",
+              "value": "Sat, 19 Sep 2026 03:52:23 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"id\": 4,\n    \"merchantReference\": \"ORDER-10001\",\n    \"amount\": 125.5,\n    \"currency\": \"USD\",\n    \"maskedCardNumber\": \"**** **** **** 4242\",\n    \"status\": \"PENDING\",\n    \"createdAt\": \"2026-09-19T03:52:23.202891Z\",\n    \"updatedAt\": \"2026-09-19T03:52:23.202891Z\"\n}"
+        },
+        {
+          "name": "Create payment - duplicate merchantReference",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"merchantReference\": \"ORDER-10001\",\n  \"amount\": 125.50,\n  \"currency\": \"USD\",\n  \"cardToken\": \"1234 1234 1234 4242\",\n  \"lastFour\": \"4242\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/card-payment/create",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "card-payment",
+                "create"
+              ]
+            }
+          },
+          "status": "Internal Server Error",
+          "code": 500,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "77"
+            },
+            {
+              "key": "Date",
+              "value": "Sat, 19 Sep 2026 05:45:45 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": 500,\n    \"message\": \"Unexpected error\",\n    \"path\": \"/api/card-payment/create\"\n}"
+        },
+        {
+          "name": "Create payment - Invalid currency",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"merchantReference\": \"ORDER-10003\",\n  \"amount\": 100.00,\n  \"currency\": \"A\",\n  \"cardToken\": \"1234 1234 1234 4242\",\n  \"lastFour\": \"4242\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/card-payment/create",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "card-payment",
+                "create"
+              ]
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "76"
+            },
+            {
+              "key": "Date",
+              "value": "Sat, 19 Sep 2026 05:45:24 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": 400,\n    \"message\": \"Invalid request\",\n    \"path\": \"/api/card-payment/create\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Update payment",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"amount\": 125.50,\n  \"currency\": \"USD\",\n  \"status\": \"AUTHORIZED\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/card-payment/{{paymentId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "card-payment",
+            "{{paymentId}}"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Update payment - update successfully",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 125.50,\n  \"currency\": \"USD\",\n  \"status\": \"AUTHORIZED\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/card-payment/{{paymentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "card-payment",
+                "{{paymentId}}"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "223"
+            },
+            {
+              "key": "Date",
+              "value": "Sat, 19 Sep 2026 04:07:53 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"id\": 17,\n    \"merchantReference\": \"ORDER-10012\",\n    \"amount\": 125.5,\n    \"currency\": \"USD\",\n    \"maskedCardNumber\": \"**** **** **** 4242\",\n    \"status\": \"AUTHORIZED\",\n    \"createdAt\": \"2026-09-19T03:59:32.716553Z\",\n    \"updatedAt\": \"2026-09-19T04:07:53.299731Z\"\n}"
+        },
+        {
+          "name": "Update payment - Invalid paymentId",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 125.50,\n  \"currency\": \"USD\",\n  \"status\": \"AUTHORIZED\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/card-payment/{{paymentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "card-payment",
+                "{{paymentId}}"
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "73"
+            },
+            {
+              "key": "Date",
+              "value": "Sat, 19 Sep 2026 05:46:34 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": 404,\n    \"message\": \"Payment not found\",\n    \"path\": \"/api/card-payment/1\"\n}"
+        },
+        {
+          "name": "Update payment - Invalid payment status",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 13.14,\n  \"currency\": \"USD\",\n  \"status\": \"PASS\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/card-payment/{{paymentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "card-payment",
+                "{{paymentId}}"
+              ]
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "71"
+            },
+            {
+              "key": "Date",
+              "value": "Sat, 19 Sep 2026 05:47:09 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": 400,\n    \"message\": \"Invalid request\",\n    \"path\": \"/api/card-payment/4\"\n}"
+        },
+        {
+          "name": "Update payment - Invalid currency",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 13.14,\n  \"currency\": \"A\",\n  \"status\": \"REFUNDED\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/card-payment/{{paymentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "card-payment",
+                "{{paymentId}}"
+              ]
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "71"
+            },
+            {
+              "key": "Date",
+              "value": "Sat, 19 Sep 2026 05:47:28 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": 400,\n    \"message\": \"Invalid request\",\n    \"path\": \"/api/card-payment/4\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get payment",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/card-payment/{{paymentId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "card-payment",
+            "{{paymentId}}"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Get payment - Invalid paymentId",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/card-payment/{{paymentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "card-payment",
+                "{{paymentId}}"
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "73"
+            },
+            {
+              "key": "Date",
+              "value": "Sat, 19 Sep 2026 05:48:19 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": 404,\n    \"message\": \"Payment not found\",\n    \"path\": \"/api/card-payment/1\"\n}"
+        },
+        {
+          "name": "Get payment - Valid paymentId",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/card-payment/{{paymentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "card-payment",
+                "{{paymentId}}"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "219"
+            },
+            {
+              "key": "Date",
+              "value": "Sat, 19 Sep 2026 04:06:55 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"id\": 17,\n    \"merchantReference\": \"ORDER-10012\",\n    \"amount\": 40,\n    \"currency\": \"CNY\",\n    \"maskedCardNumber\": \"**** **** **** 4242\",\n    \"status\": \"PENDING\",\n    \"createdAt\": \"2026-09-19T03:59:32.716553Z\",\n    \"updatedAt\": \"2026-09-19T03:59:32.716553Z\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "List payments - 10 per page",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/card-payment/list?page=0",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "card-payment",
+            "list"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "0"
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "List payments - first page",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/card-payment/list?page=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "card-payment",
+                "list"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "2266"
+            },
+            {
+              "key": "Date",
+              "value": "Sat, 19 Sep 2026 04:03:26 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"content\": [\n        {\n            \"id\": 17,\n            \"merchantReference\": \"ORDER-10012\",\n            \"amount\": 40,\n            \"currency\": \"CNY\",\n            \"maskedCardNumber\": \"**** **** **** 4242\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-09-19T03:59:32.716553Z\",\n            \"updatedAt\": \"2026-09-19T03:59:32.716553Z\"\n        },\n        {\n            \"id\": 16,\n            \"merchantReference\": \"ORDER-10011\",\n            \"amount\": 6000,\n            \"currency\": \"CNY\",\n            \"maskedCardNumber\": \"**** **** **** 4242\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-09-19T03:59:21.792577Z\",\n            \"updatedAt\": \"2026-09-19T03:59:21.792577Z\"\n        },\n        {\n            \"id\": 15,\n            \"merchantReference\": \"ORDER-10010\",\n            \"amount\": 13.99,\n            \"currency\": \"SGD\",\n            \"maskedCardNumber\": \"**** **** **** 4242\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-09-19T03:58:33.179473Z\",\n            \"updatedAt\": \"2026-09-19T03:58:33.179473Z\"\n        },\n        {\n            \"id\": 14,\n            \"merchantReference\": \"ORDER-10009\",\n            \"amount\": 89.34,\n            \"currency\": \"SGD\",\n            \"maskedCardNumber\": \"**** **** **** 4242\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-09-19T03:58:17.354647Z\",\n            \"updatedAt\": \"2026-09-19T03:58:17.354647Z\"\n        },\n        {\n            \"id\": 13,\n            \"merchantReference\": \"ORDER-10008\",\n            \"amount\": 49.99,\n            \"currency\": \"SGD\",\n            \"maskedCardNumber\": \"**** **** **** 4242\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-09-19T03:58:05.098378Z\",\n            \"updatedAt\": \"2026-09-19T03:58:05.098378Z\"\n        },\n        {\n            \"id\": 12,\n            \"merchantReference\": \"ORDER-10007\",\n            \"amount\": 9.4,\n            \"currency\": \"SGD\",\n            \"maskedCardNumber\": \"**** **** **** 4242\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-09-19T03:57:50.145992Z\",\n            \"updatedAt\": \"2026-09-19T03:57:50.145992Z\"\n        },\n        {\n            \"id\": 11,\n            \"merchantReference\": \"ORDER-10006\",\n            \"amount\": 5.4,\n            \"currency\": \"MYR\",\n            \"maskedCardNumber\": \"**** **** **** 4242\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-09-19T03:57:27.092163Z\",\n            \"updatedAt\": \"2026-09-19T03:57:27.092163Z\"\n        },\n        {\n            \"id\": 10,\n            \"merchantReference\": \"ORDER-10005\",\n            \"amount\": 30.4,\n            \"currency\": \"MYR\",\n            \"maskedCardNumber\": \"**** **** **** 4242\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-09-19T03:57:14.950632Z\",\n            \"updatedAt\": \"2026-09-19T03:57:14.950632Z\"\n        },\n        {\n            \"id\": 9,\n            \"merchantReference\": \"ORDER-10004\",\n            \"amount\": 200,\n            \"currency\": \"MYR\",\n            \"maskedCardNumber\": \"**** **** **** 4242\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-09-19T03:56:59.398196Z\",\n            \"updatedAt\": \"2026-09-19T03:56:59.398196Z\"\n        },\n        {\n            \"id\": 8,\n            \"merchantReference\": \"ORDER-10003\",\n            \"amount\": 100,\n            \"currency\": \"MYR\",\n            \"maskedCardNumber\": \"**** **** **** 4242\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-09-19T03:56:44.440472Z\",\n            \"updatedAt\": \"2026-09-19T03:56:44.440472Z\"\n        }\n    ],\n    \"page\": 0,\n    \"size\": 10,\n    \"totalElements\": 12,\n    \"totalPages\": 2\n}"
+        },
+        {
+          "name": "List payments - second page",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/card-payment/list?page=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "card-payment",
+                "list"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "506"
+            },
+            {
+              "key": "Date",
+              "value": "Sat, 19 Sep 2026 04:04:49 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"content\": [\n        {\n            \"id\": 7,\n            \"merchantReference\": \"ORDER-10002\",\n            \"amount\": 125,\n            \"currency\": \"USD\",\n            \"maskedCardNumber\": \"**** **** **** 4242\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-09-19T03:55:40.954527Z\",\n            \"updatedAt\": \"2026-09-19T03:55:40.954527Z\"\n        },\n        {\n            \"id\": 4,\n            \"merchantReference\": \"ORDER-10001\",\n            \"amount\": 125.5,\n            \"currency\": \"USD\",\n            \"maskedCardNumber\": \"**** **** **** 4242\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-09-19T03:52:23.202891Z\",\n            \"updatedAt\": \"2026-09-19T03:52:23.202891Z\"\n        }\n    ],\n    \"page\": 1,\n    \"size\": 10,\n    \"totalElements\": 12,\n    \"totalPages\": 2\n}"
+        },
+        {
+          "name": "List payments - without page request param (default first page)",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/card-payment/list",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "card-payment",
+                "list"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "2266"
+            },
+            {
+              "key": "Date",
+              "value": "Sat, 19 Sep 2026 04:05:27 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"content\": [\n        {\n            \"id\": 17,\n            \"merchantReference\": \"ORDER-10012\",\n            \"amount\": 40,\n            \"currency\": \"CNY\",\n            \"maskedCardNumber\": \"**** **** **** 4242\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-09-19T03:59:32.716553Z\",\n            \"updatedAt\": \"2026-09-19T03:59:32.716553Z\"\n        },\n        {\n            \"id\": 16,\n            \"merchantReference\": \"ORDER-10011\",\n            \"amount\": 6000,\n            \"currency\": \"CNY\",\n            \"maskedCardNumber\": \"**** **** **** 4242\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-09-19T03:59:21.792577Z\",\n            \"updatedAt\": \"2026-09-19T03:59:21.792577Z\"\n        },\n        {\n            \"id\": 15,\n            \"merchantReference\": \"ORDER-10010\",\n            \"amount\": 13.99,\n            \"currency\": \"SGD\",\n            \"maskedCardNumber\": \"**** **** **** 4242\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-09-19T03:58:33.179473Z\",\n            \"updatedAt\": \"2026-09-19T03:58:33.179473Z\"\n        },\n        {\n            \"id\": 14,\n            \"merchantReference\": \"ORDER-10009\",\n            \"amount\": 89.34,\n            \"currency\": \"SGD\",\n            \"maskedCardNumber\": \"**** **** **** 4242\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-09-19T03:58:17.354647Z\",\n            \"updatedAt\": \"2026-09-19T03:58:17.354647Z\"\n        },\n        {\n            \"id\": 13,\n            \"merchantReference\": \"ORDER-10008\",\n            \"amount\": 49.99,\n            \"currency\": \"SGD\",\n            \"maskedCardNumber\": \"**** **** **** 4242\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-09-19T03:58:05.098378Z\",\n            \"updatedAt\": \"2026-09-19T03:58:05.098378Z\"\n        },\n        {\n            \"id\": 12,\n            \"merchantReference\": \"ORDER-10007\",\n            \"amount\": 9.4,\n            \"currency\": \"SGD\",\n            \"maskedCardNumber\": \"**** **** **** 4242\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-09-19T03:57:50.145992Z\",\n            \"updatedAt\": \"2026-09-19T03:57:50.145992Z\"\n        },\n        {\n            \"id\": 11,\n            \"merchantReference\": \"ORDER-10006\",\n            \"amount\": 5.4,\n            \"currency\": \"MYR\",\n            \"maskedCardNumber\": \"**** **** **** 4242\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-09-19T03:57:27.092163Z\",\n            \"updatedAt\": \"2026-09-19T03:57:27.092163Z\"\n        },\n        {\n            \"id\": 10,\n            \"merchantReference\": \"ORDER-10005\",\n            \"amount\": 30.4,\n            \"currency\": \"MYR\",\n            \"maskedCardNumber\": \"**** **** **** 4242\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-09-19T03:57:14.950632Z\",\n            \"updatedAt\": \"2026-09-19T03:57:14.950632Z\"\n        },\n        {\n            \"id\": 9,\n            \"merchantReference\": \"ORDER-10004\",\n            \"amount\": 200,\n            \"currency\": \"MYR\",\n            \"maskedCardNumber\": \"**** **** **** 4242\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-09-19T03:56:59.398196Z\",\n            \"updatedAt\": \"2026-09-19T03:56:59.398196Z\"\n        },\n        {\n            \"id\": 8,\n            \"merchantReference\": \"ORDER-10003\",\n            \"amount\": 100,\n            \"currency\": \"MYR\",\n            \"maskedCardNumber\": \"**** **** **** 4242\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-09-19T03:56:44.440472Z\",\n            \"updatedAt\": \"2026-09-19T03:56:44.440472Z\"\n        }\n    ],\n    \"page\": 0,\n    \"size\": 10,\n    \"totalElements\": 12,\n    \"totalPages\": 2\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get payment exchange rate (nested third-party call)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/card-payment/{{paymentId}}/exchange-rate?targetCurrency=EUR",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "card-payment",
+            "{{paymentId}}",
+            "exchange-rate"
+          ],
+          "query": [
+            {
+              "key": "targetCurrency",
+              "value": "EUR"
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Get payment exchange rate - success",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/card-payment/{{paymentId}}/exchange-rate?targetCurrency=MYR",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "card-payment",
+                "{{paymentId}}",
+                "exchange-rate"
+              ],
+              "query": [
+                {
+                  "key": "targetCurrency",
+                  "value": "MYR"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "157"
+            },
+            {
+              "key": "Date",
+              "value": "Sat, 19 Sep 2026 04:27:42 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"paymentId\": 7,\n    \"paymentAmount\": 13.14,\n    \"convertedAmount\": 53.61777,\n    \"sourceCurrency\": \"USD\",\n    \"targetCurrency\": \"MYR\",\n    \"exchangeRate\": 4.0805,\n    \"rateDate\": \"2026-09-18\"\n}"
+        },
+        {
+          "name": "Get payment exchange rate - Invalid targetCurrency",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/card-payment/{{paymentId}}/exchange-rate?targetCurrency=A",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "card-payment",
+                "{{paymentId}}",
+                "exchange-rate"
+              ],
+              "query": [
+                {
+                  "key": "targetCurrency",
+                  "value": "A"
+                }
+              ]
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "102"
+            },
+            {
+              "key": "Date",
+              "value": "Sat, 19 Sep 2026 05:49:24 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": 400,\n    \"message\": \"Invalid argument: targetCurrency\",\n    \"path\": \"/api/card-payment/1/exchange-rate\"\n}"
+        },
+        {
+          "name": "Get payment exchange rate - Invalid paymentId",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/card-payment/{{paymentId}}/exchange-rate?targetCurrency=MYR",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "card-payment",
+                "{{paymentId}}",
+                "exchange-rate"
+              ],
+              "query": [
+                {
+                  "key": "targetCurrency",
+                  "value": "MYR"
+                }
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "87"
+            },
+            {
+              "key": "Date",
+              "value": "Sat, 19 Sep 2026 05:49:52 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": 404,\n    \"message\": \"Payment not found\",\n    \"path\": \"/api/card-payment/1/exchange-rate\"\n}"
+        },
+        {
+          "name": "Get payment exchange rate - Third party return invalid response",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/card-payment/{{paymentId}}/exchange-rate?targetCurrency=MYR",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "card-payment",
+                "{{paymentId}}",
+                "exchange-rate"
+              ],
+              "query": [
+                {
+                  "key": "targetCurrency",
+                  "value": "MYR"
+                }
+              ]
+            }
+          },
+          "status": "Internal Server Error",
+          "code": 500,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "114"
+            },
+            {
+              "key": "Date",
+              "value": "Sat, 19 Sep 2026 05:50:51 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": 500,\n    \"message\": \"Unexpected error while getting exchange rate\",\n    \"path\": \"/api/card-payment/4/exchange-rate\"\n}"
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "paymentId",
+      "value": "1"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: card
+  datasource:
+    url: ${DB_URL:jdbc:sqlserver://localhost:1433;databaseName=TESTDB;encrypt=true;trustServerCertificate=true}
+    username: ${DB_USERNAME:sa}
+    password: ${DB_PASSWORD:}
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServerDialect
+        format_sql: true
+
+third-party:
+  exchange-rate-url: https://api.frankfurter.dev/v1/latest
+
+logging:
+  file:
+    name: logs/card.log
+  level:
+    com:
+      example:
+        card:
+          payment: DEBUG
+        exchangerate: DEBUG
+
+pagination:
+  page:
+    size: 10
